@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ joystick_fragment_layout.xml
+  ~ Copyright (C) 2017  Automata Development
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  -->
+
+<android.support.constraint.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_height="match_parent"
+	android:layout_width="match_parent">
+
+	<com.makeapede.make_a_pede.ui.Joystick
+		android:id="@+id/joystick"
+		android:layout_height="0dp"
+		android:layout_width="wrap_content"
+		app:layout_constraintTop_toTopOf="parent"
+		android:layout_marginTop="8dp"
+		android:layout_marginRight="8dp"
+		app:layout_constraintRight_toRightOf="parent"
+		android:layout_marginLeft="8dp"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintBottom_toTopOf="@id/power_slider"
+		android:layout_marginBottom="8dp"
+		android:layout_marginStart="8dp"
+		android:layout_marginEnd="8dp"
+		app:primaryDimension="vertical"/>
+
+	<SeekBar
+		android:id="@+id/power_slider"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="8dp"
+		android:layout_marginLeft="8dp"
+		android:layout_marginRight="8dp"
+		android:layout_marginTop="8dp"
+		android:max="60"
+		android:progress="60"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintRight_toRightOf="parent"/>
+
+	<View
+		android:id="@+id/view"
+		android:layout_width="0dp"
+		android:layout_height="1dp"
+		android:layout_marginBottom="8dp"
+		android:layout_marginLeft="0dp"
+		android:layout_marginRight="0dp"
+		android:layout_marginTop="8dp"
+		android:background="@color/colorAccent"
+		app:layout_constraintBottom_toBottomOf="@+id/joystick"
+		app:layout_constraintLeft_toLeftOf="@+id/joystick"
+		app:layout_constraintRight_toRightOf="@+id/joystick"
+		app:layout_constraintTop_toTopOf="@+id/joystick"/>
+
+</android.support.constraint.ConstraintLayout>

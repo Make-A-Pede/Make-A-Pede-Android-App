@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ AndroidManifest.xml
+  ~ Copyright (C) 2017  Automata Development
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  -->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+		  package="com.makeapede.make_a_pede">
+
+	<uses-permission android:name="android.permission.BLUETOOTH"/>
+	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+	<uses-permission android:name="android.permission.VIBRATE"/>
+
+	<uses-feature
+		android:name="android.hardware.bluetooth_le"
+		android:required="true"/>
+
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+	<uses-feature android:name="android.hardware.location.gps"/>
+
+	<application
+		android:allowBackup="true"
+		android:icon="@mipmap/ic_launcher"
+		android:label="@string/app_name"
+		android:supportsRtl="true"
+		android:theme="@style/AppTheme">
+		<activity
+			android:name=".activities.DeviceListActivity"
+			android:parentActivityName=".activities.HomeActivity">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value=".activities.HomeActivity"/>
+		</activity>
+
+		<service
+			android:name=".bluetooth.BluetoothLeService"
+			android:enabled="true"/>
+
+		<activity
+			android:name=".activities.MainActivity"
+			android:parentActivityName=".activities.DeviceListActivity">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value=".activities.DeviceListActivity"/>
+		</activity>
+		<activity
+			android:name=".activities.HomeActivity"
+			android:theme="@style/AppTheme.TransparentActionBar">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN"/>
+
+				<category android:name="android.intent.category.LAUNCHER"/>
+			</intent-filter>
+		</activity>
+		<activity android:name=".activities.DemoActivity">
+		</activity>
+	</application>
+
+</manifest>

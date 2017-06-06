@@ -1,0 +1,47 @@
+<!--
+  ~ styles.xml
+  ~ Copyright (C) 2017  Automata Development
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  -->
+
+<resources>
+
+	<style name="AppTheme" parent="Theme.AppCompat">
+		<item name="colorPrimary">@color/colorAccent</item>
+		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+		<item name="colorAccent">@color/colorAccent</item>
+
+		<item name="android:textColorPrimary">#323232</item>
+	</style>
+
+	<style name="AppTheme.NoActionBar" parent="AppTheme">
+		<item name="windowActionBar">false</item>
+		<item name="windowNoTitle">true</item>
+	</style>
+
+	<style name="AppTheme.TransparentActionBar" parent="AppTheme">
+		<item name="android:actionBarStyle">@style/ThemeTransparentActionBar</item>
+		<item name="android:windowActionBarOverlay">true</item>
+		<item name="actionBarStyle">@style/ThemeTransparentActionBar</item>
+		<item name="windowActionBarOverlay">true</item>
+	</style>
+
+	<style name="ThemeTransparentActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid">
+		<item name="android:background">@null</item>
+		<item name="background">@null</item>
+	</style>
+
+</resources>

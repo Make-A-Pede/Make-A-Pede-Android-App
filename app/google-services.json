@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "958223410099",
+    "firebase_url": "https://make-a-pede.firebaseio.com",
+    "project_id": "make-a-pede",
+    "storage_bucket": "make-a-pede.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:958223410099:android:9300de2e33260a42",
+        "android_client_info": {
+          "package_name": "com.makeapede.make_a_pede"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "958223410099-3jr2j43p0er8ug4pb32oma4s2hc47l7j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSI2uQeO7sOtOMb_PIb8W6OA-1EfN3H2c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
