@@ -42,7 +42,7 @@ public class ArrowKeyFragment extends ControllerFragment {
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		layout = inflater.inflate(R.layout.arrows_fragment_layout, container, false);
 
-		powerSlider = (SeekBar) layout.findViewById(R.id.power_slider);
+		powerSlider = layout.findViewById(R.id.power_slider);
 
 		setTouchListenerOnView(R.id.up_arrow, new OnArrowClickedListener(127, 127));
 		setTouchListenerOnView(R.id.left_arrow, new OnArrowClickedListener(0, 127));

@@ -51,7 +51,7 @@
 			android:enabled="true"/>
 
 		<activity
-			android:name=".activities.MainActivity"
+			android:name=".activities.ControllerActivity"
 			android:parentActivityName=".activities.DeviceListActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
@@ -65,8 +65,6 @@
 
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
-		</activity>
-		<activity android:name=".activities.DemoActivity">
 		</activity>
 	</application>
 

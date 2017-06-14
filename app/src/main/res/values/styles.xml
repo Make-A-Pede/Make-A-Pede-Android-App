@@ -24,7 +24,9 @@
 		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
 		<item name="colorAccent">@color/colorAccent</item>
 
-		<item name="android:textColorPrimary">#323232</item>
+		<item name="android:textColorPrimary">@color/darkGray</item>
+
+		<item name="android:itemTextAppearance">@style/MenuItemTextAppearance</item>
 	</style>
 
 	<style name="AppTheme.NoActionBar" parent="AppTheme">
@@ -42,6 +44,10 @@
 	<style name="ThemeTransparentActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid">
 		<item name="android:background">@null</item>
 		<item name="background">@null</item>
+	</style>
+
+	<style name="MenuItemTextAppearance">
+		<item name="android:textColor">@color/white</item>
 	</style>
 
 </resources>

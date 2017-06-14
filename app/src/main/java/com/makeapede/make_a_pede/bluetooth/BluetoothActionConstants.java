@@ -1,5 +1,5 @@
 /*
- * build.gradle
+ * BluetoothActionConstants.java
  * Copyright (C) 2017  Automata Development
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,29 +17,13 @@
  *
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+package com.makeapede.make_a_pede.bluetooth;
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
-        classpath 'me.tatarka:gradle-retrolambda:3.6.0'
-        classpath 'com.google.gms:google-services:3.1.0'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
-}
-
-allprojects {
-    repositories {
-        jcenter()
-        maven { url 'https://maven.google.com' }
-    }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
+public interface BluetoothActionConstants {
+	String ACTION_CONNECTED = "com.makeapede.bluetooth.ACTION_CONNECTED";
+	String ACTION_DISCONNECTED = "com.makeapede.bluetooth.ACTION_DISCONNECTED";
+	String ACTION_SERVICES_DISCOVERED = "com.makeapede.bluetooth.ACTION_SERVICES_DISCOVERED";
+	String ACTION_DATA_AVAILABLE = "com.makeapede.bluetooth.ACTION_DATA_AVAILABLE";
+	String ACTION_ERROR = "com.makeapede.bluetooth.ACTION_ERROR";
+	String EXTRA_DATA = "com.makeapede.bluetooth.EXTRA_DATA";
 }

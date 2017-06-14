@@ -22,4 +22,6 @@
 	<color name="colorAccent">#91cf34</color>
 	<color name="colorPrimary">#91cf34</color>
 	<color name="colorPrimaryDark">#659024</color>
+	<color name="white">#FFFFFF</color>
+	<color name="darkGray">#323232</color>
 </resources>

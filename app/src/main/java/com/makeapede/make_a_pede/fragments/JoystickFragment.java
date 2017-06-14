@@ -41,10 +41,10 @@ public class JoystickFragment extends ControllerFragment {
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		View layout = inflater.inflate(R.layout.joystick_fragment_layout, container, false);
 
-		Joystick joystick = (Joystick) layout.findViewById(R.id.joystick);
+		Joystick joystick = layout.findViewById(R.id.joystick);
 		joystick.setJoystickTouchListener(this::processJoystickTouchEvent);
 
-		powerSlider = (SeekBar) layout.findViewById(R.id.power_slider);
+		powerSlider = layout.findViewById(R.id.power_slider);
 
 		return layout;
 	}

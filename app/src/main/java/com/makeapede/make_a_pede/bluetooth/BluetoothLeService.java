@@ -37,14 +37,8 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BluetoothLeService extends Service {
+public class BluetoothLeService extends Service implements BluetoothActionConstants {
 	private final static String TAG = BluetoothLeService.class.getSimpleName();
-
-	public final static String ACTION_GATT_CONNECTED = "com.makeapede.bluetooth.le.ACTION_GATT_CONNECTED";
-	public final static String ACTION_GATT_DISCONNECTED = "com.makeapede.bluetooth.le.ACTION_GATT_DISCONNECTED";
-	public final static String ACTION_GATT_SERVICES_DISCOVERED = "com.makeapede.bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED";
-	public final static String ACTION_DATA_AVAILABLE = "com.makeapede.bluetooth.le.ACTION_DATA_AVAILABLE";
-	public final static String EXTRA_DATA = "com.makeapede.bluetooth.le.EXTRA_DATA";
 
 	private static final int STATE_DISCONNECTED = 0;
 	private static final int STATE_CONNECTING = 1;
@@ -64,14 +58,14 @@ public class BluetoothLeService extends Service {
 		public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
 			String intentAction;
 			if (newState == BluetoothProfile.STATE_CONNECTED) {
-				intentAction = ACTION_GATT_CONNECTED;
+				intentAction = ACTION_CONNECTED;
 				connectionState = STATE_CONNECTED;
 				broadcastUpdate(intentAction);
 				Log.i(TAG, "Connected to GATT server.");
 				Log.i(TAG, "Attempting to start service discovery:" + bluetoothGatt.discoverServices());
 
 			} else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-				intentAction = ACTION_GATT_DISCONNECTED;
+				intentAction = ACTION_DISCONNECTED;
 				connectionState = STATE_DISCONNECTED;
 				Log.i(TAG, "Disconnected from GATT server.");
 				broadcastUpdate(intentAction);
@@ -81,7 +75,7 @@ public class BluetoothLeService extends Service {
 		@Override
 		public void onServicesDiscovered(BluetoothGatt gatt, int status) {
 			if (status == BluetoothGatt.GATT_SUCCESS) {
-				broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
+				broadcastUpdate(ACTION_SERVICES_DISCOVERED);
 			} else {
 				Log.w(TAG, "onServicesDiscovered received: " + status);
 			}

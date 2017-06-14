@@ -31,4 +31,7 @@
 	<string name="action_arrows">Arrows</string>
 	<string name="joystick_demo_action">Joystick Demo</string>
 	<string name="available_devices">Available Devices</string>
+	<string name="bluetooth_protocol">Bluetooth Protocol</string>
+	<string name="protocol_ble">BLE</string>
+	<string name="protocol_spp">SPP</string>
 </resources>

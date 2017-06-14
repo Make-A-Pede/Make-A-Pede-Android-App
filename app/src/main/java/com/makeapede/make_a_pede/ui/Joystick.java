@@ -95,7 +95,7 @@ public class Joystick extends RelativeLayout {
 	protected void onFinishInflate() {
 		super.onFinishInflate();
 
-		dot = (ImageView) findViewById(R.id.dot);
+		dot = findViewById(R.id.dot);
 	}
 
 	@SuppressWarnings("SuspiciousNameCombination")

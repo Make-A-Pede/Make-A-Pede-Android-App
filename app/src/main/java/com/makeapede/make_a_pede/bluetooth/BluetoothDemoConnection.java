@@ -1,5 +1,5 @@
 /*
- * build.gradle
+ * BluetoothDemoConnection.java
  * Copyright (C) 2017  Automata Development
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,29 +17,26 @@
  *
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+package com.makeapede.make_a_pede.bluetooth;
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
-        classpath 'me.tatarka:gradle-retrolambda:3.6.0'
-        classpath 'com.google.gms:google-services:3.1.0'
+import android.content.Context;
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
-}
+public class BluetoothDemoConnection extends BluetoothConnection {
+	public BluetoothDemoConnection(Context context, String address, BluetoothConnectionEventListener listener) {
+		super(context, address, listener);
+	}
 
-allprojects {
-    repositories {
-        jcenter()
-        maven { url 'https://maven.google.com' }
-    }
-}
+	@Override
+	public void connect() {
+		connectionEventListener.onBluetoothConnectionEvent(ACTION_CONNECTED);
+	}
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+	@Override
+	public void disconnect() {}
+
+	@Override
+	public void destroy() {}
+
+	@Override
+	public void sendMessage(String message) {}
 }

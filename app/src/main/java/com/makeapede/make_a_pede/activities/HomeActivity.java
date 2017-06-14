@@ -20,15 +20,12 @@
 package com.makeapede.make_a_pede.activities;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +41,8 @@ import com.makeapede.make_a_pede.firebase.FbLinkAction;
 import java.util.Random;
 
 public class HomeActivity extends AppCompatActivity {
+	public static final String EXTRA_DEMO = "demo";
+
 	private String fbLinkText;
 	private String fbLinkUrl;
 	private String fbLinkActionText;
@@ -108,7 +107,7 @@ public class HomeActivity extends AppCompatActivity {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			builder.setToolbarColor(getColor(R.color.colorPrimary));
 		} else {
-			builder.setToolbarColor(Color.parseColor("#303030"));
+			builder.setToolbarColor(0x91cf34);
 		}
 		customTabsIntent.launchUrl(this, Uri.parse(url));
 	}
@@ -119,7 +118,7 @@ public class HomeActivity extends AppCompatActivity {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			builder.setToolbarColor(getColor(R.color.colorPrimary));
 		} else {
-			builder.setToolbarColor(Color.parseColor("#303030"));
+			builder.setToolbarColor(0x91cf34);
 		}
 		customTabsIntent.launchUrl(this, Uri.parse(fbLinkUrl));
 	}
@@ -128,19 +127,16 @@ public class HomeActivity extends AppCompatActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.home_activity_menu, menu);
 
-		MenuItem item = menu.findItem(R.id.action_open_demo);
-		SpannableString s = new SpannableString("Joystick Demo");
-		s.setSpan(new ForegroundColorSpan(Color.WHITE), 0, s.length(), 0);
-		item.setTitle(s);
-
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+
 		switch (item.getItemId()) {
 			case R.id.action_open_demo:
-				Intent intent = new Intent(this, DemoActivity.class);
+				Intent intent = new Intent(this, ControllerActivity.class);
+				intent.putExtra(EXTRA_DEMO, true);
 				startActivity(intent);
 				break;
 		}
