@@ -1,5 +1,5 @@
 /*
- * MainActivity.java
+ * ControllerActivity.java
  * Copyright (C) 2017 Automata Development
  *
  * This program is free software: you can redistribute it and/or modify
