@@ -34,6 +34,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.crashlytics.android.Crashlytics;
 import com.makeapede.make_a_pede.R;
 import com.makeapede.make_a_pede.bluetooth.BluetoothActionConstants;
 import com.makeapede.make_a_pede.bluetooth.BluetoothConnection;
@@ -43,6 +44,8 @@ import com.makeapede.make_a_pede.bluetooth.BluetoothSppConnection;
 import com.makeapede.make_a_pede.fragments.ArrowKeyFragment;
 import com.makeapede.make_a_pede.fragments.ControllerFragment;
 import com.makeapede.make_a_pede.fragments.JoystickFragment;
+
+import io.fabric.sdk.android.Fabric;
 
 public class ControllerActivity extends AppCompatActivity implements BluetoothConnection.BluetoothConnectionEventListener,
 																	 BluetoothActionConstants,
@@ -69,6 +72,7 @@ public class ControllerActivity extends AppCompatActivity implements BluetoothCo
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Fabric.with(this, new Crashlytics());
 		setContentView(R.layout.activity_main);
 
 		ActionBar bar = getSupportActionBar();

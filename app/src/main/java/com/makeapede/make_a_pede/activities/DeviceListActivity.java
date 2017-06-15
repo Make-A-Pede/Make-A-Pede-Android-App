@@ -46,11 +46,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.makeapede.make_a_pede.R;
 import com.makeapede.make_a_pede.bluetooth.BluetoothNotSupportedException;
 import com.makeapede.make_a_pede.bluetooth.BluetoothScanner;
 
 import java.util.ArrayList;
+
+import io.fabric.sdk.android.Fabric;
 
 public class DeviceListActivity extends AppCompatActivity implements BluetoothScanner.BluetoothScanEventListener {
 	// Intent extra tags for BLE device name and device address
@@ -75,7 +78,7 @@ public class DeviceListActivity extends AppCompatActivity implements BluetoothSc
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		Fabric.with(this, new Crashlytics());
 		setContentView(R.layout.activity_device_list);
 
 		ActionBar bar = getSupportActionBar();
