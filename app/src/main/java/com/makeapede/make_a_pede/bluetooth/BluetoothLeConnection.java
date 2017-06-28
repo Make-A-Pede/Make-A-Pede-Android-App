@@ -34,7 +34,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class BluetoothLeConnection extends BluetoothConnection {
-	private static final UUID DRIVE_UUID = UUID.fromString("19B10001-E8F2-537E-4F6C-D104768A1214");
+	private static final UUID DRIVE_UUID_CURIE = UUID.fromString("19B10001-E8F2-537E-4F6C-D104768A1214");
+	private static final UUID DRIVE_UUID_HC08 = UUID.fromString("0000FFE1-0000-1000-8000-00805F9B34FB");
 
 	private BluetoothLeService bluetoothLeService;
 	private BluetoothGattCharacteristic driveCharacteristic;
@@ -113,8 +114,10 @@ public class BluetoothLeConnection extends BluetoothConnection {
 		if (gattServices == null) return;
 
 		for (BluetoothGattService gattService : gattServices) {
-			if(gattService.getCharacteristic(DRIVE_UUID) != null) {
-				driveCharacteristic = gattService.getCharacteristic(DRIVE_UUID);
+			if(gattService.getCharacteristic(DRIVE_UUID_CURIE) != null) {
+				driveCharacteristic = gattService.getCharacteristic(DRIVE_UUID_CURIE);
+			} else if(gattService.getCharacteristic(DRIVE_UUID_HC08) != null) {
+				driveCharacteristic = gattService.getCharacteristic(DRIVE_UUID_HC08);
 			}
 		}
 
