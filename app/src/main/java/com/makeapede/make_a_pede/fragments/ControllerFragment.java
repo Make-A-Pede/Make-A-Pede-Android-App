@@ -33,7 +33,7 @@ import com.makeapede.make_a_pede.utils.Timer;
  */
 public abstract class ControllerFragment extends Fragment {
 	protected OnShouldSendMessageListener messageListener;
-	protected int btSendInterval = 100;
+	private int btSendInterval = 100;
 
 	public abstract void setSpeedPercent(int percent);
 	public abstract int getSpeedPercent();

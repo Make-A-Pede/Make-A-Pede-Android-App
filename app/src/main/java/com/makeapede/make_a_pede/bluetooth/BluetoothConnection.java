@@ -43,8 +43,13 @@ public abstract class BluetoothConnection implements BluetoothActionConstants, L
 	public abstract void destroy();
 
 	public abstract void sendMessage(String message);
+	public abstract void subscribeToHeadingNotifications(OnHeadingReadListener listener);
 
 	public interface BluetoothConnectionEventListener {
 		void onBluetoothConnectionEvent(String event);
+	}
+
+	public interface OnHeadingReadListener {
+		void headingRead(String heading);
 	}
 }

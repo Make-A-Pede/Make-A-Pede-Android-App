@@ -27,13 +27,13 @@ import android.os.AsyncTask;
 import java.io.IOException;
 import java.util.UUID;
 
-public class BluetoothSppConnection extends BluetoothConnection {
+public class BluetoothClassicConnection extends BluetoothConnection {
 	private static final UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
 	private BluetoothSocket btSocket;
 	private boolean connected = false;
 
-	public BluetoothSppConnection(Context context, String address, BluetoothConnectionEventListener listener) {
+	public BluetoothClassicConnection(Context context, String address, BluetoothConnectionEventListener listener) {
 		super(context, address, listener);
 
 		new ConnectBTTask().execute();
@@ -67,6 +67,11 @@ public class BluetoothSppConnection extends BluetoothConnection {
 				new ConnectBTTask().execute();
 			}
 		}
+	}
+
+	@Override
+	public void subscribeToHeadingNotifications(OnHeadingReadListener listener) {
+		listener.headingRead(null);
 	}
 
 	private class ConnectBTTask extends AsyncTask<Void, Void, Void> {

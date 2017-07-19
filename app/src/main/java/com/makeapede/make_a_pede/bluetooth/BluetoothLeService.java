@@ -25,6 +25,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
@@ -115,14 +116,10 @@ public class BluetoothLeService extends Service implements BluetoothActionConsta
 
 		final byte[] data = characteristic.getValue();
 		if (data != null && data.length > 0) {
-			final StringBuilder stringBuilder = new StringBuilder(data.length);
-
-			for(byte byteChar : data) {
-				stringBuilder.append(String.format("%02X ", byteChar));
-			}
-
-			intent.putExtra(EXTRA_DATA, new String(data) + "\n" + stringBuilder.toString());
+			intent.putExtra(EXTRA_DATA, new String(data));
 		}
+
+		intent.putExtra(EXTRA_UUID, characteristic.getUuid().toString());
 
 		sendBroadcast(intent);
 	}
@@ -214,8 +211,7 @@ public class BluetoothLeService extends Service implements BluetoothActionConsta
 	}
 
 	public void readCharacteristic(BluetoothGattCharacteristic characteristic) {
-		if (bluetoothAdapter == null || bluetoothGatt == null) {
-			Log.w(TAG, "BluetoothAdapter not initialized");
+		if (bluetoothAdapter == null || bluetoothGatt == null || characteristic == null) {
 			return;
 		}
 		bluetoothGatt.readCharacteristic(characteristic);
@@ -257,6 +253,12 @@ public class BluetoothLeService extends Service implements BluetoothActionConsta
 		}
 
 		bluetoothGatt.setCharacteristicNotification(characteristic, enabled);
+
+		for (BluetoothGattDescriptor descriptor : characteristic.getDescriptors()) {
+			descriptor.setValue(
+					enabled ? BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE : new byte[] {0x00, 0x00});
+			bluetoothGatt.writeDescriptor(descriptor);
+		}
 	}
 
 	public List<BluetoothGattService> getSupportedGattServices() {

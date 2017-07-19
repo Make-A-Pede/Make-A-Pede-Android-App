@@ -33,6 +33,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.LinearInterpolator;
 
 import com.crashlytics.android.Crashlytics;
 import com.makeapede.make_a_pede.R;
@@ -40,7 +42,7 @@ import com.makeapede.make_a_pede.bluetooth.BluetoothActionConstants;
 import com.makeapede.make_a_pede.bluetooth.BluetoothConnection;
 import com.makeapede.make_a_pede.bluetooth.BluetoothDemoConnection;
 import com.makeapede.make_a_pede.bluetooth.BluetoothLeConnection;
-import com.makeapede.make_a_pede.bluetooth.BluetoothSppConnection;
+import com.makeapede.make_a_pede.bluetooth.BluetoothClassicConnection;
 import com.makeapede.make_a_pede.fragments.ArrowKeyFragment;
 import com.makeapede.make_a_pede.fragments.ControllerFragment;
 import com.makeapede.make_a_pede.fragments.JoystickFragment;
@@ -69,6 +71,10 @@ public class ControllerActivity extends AppCompatActivity implements BluetoothCo
 	private MenuItem joystickMenuItem;
 	private MenuItem arrowsMenuItem;
 
+	private View headingIndicator;
+
+	private int currentHeading;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,6 +85,8 @@ public class ControllerActivity extends AppCompatActivity implements BluetoothCo
 		if(bar != null) {
 			bar.setDisplayHomeAsUpEnabled(true);
 		}
+
+		headingIndicator = findViewById(R.id.heading_indicator);
 
 		final Intent intent = getIntent();
 
@@ -99,7 +107,7 @@ public class ControllerActivity extends AppCompatActivity implements BluetoothCo
 			if (deviceType == BluetoothDevice.DEVICE_TYPE_LE) {
 				bluetoothConnection = new BluetoothLeConnection(this, deviceAddress, this);
 			} else if (deviceType == BluetoothDevice.DEVICE_TYPE_CLASSIC) {
-				bluetoothConnection = new BluetoothSppConnection(this, deviceAddress, this);
+				bluetoothConnection = new BluetoothClassicConnection(this, deviceAddress, this);
 			} else {
 				finish();
 			}
@@ -253,6 +261,20 @@ public class ControllerActivity extends AppCompatActivity implements BluetoothCo
 		switch (event) {
 			case ACTION_CONNECTED:
 				progress.hide();
+				bluetoothConnection.subscribeToHeadingNotifications((heading) -> {
+					if(heading != null) {
+						int r = 360 - (int) (Float.parseFloat(heading));
+
+						int headingDelta = r-currentHeading;
+						currentHeading = r;
+
+						headingIndicator.animate()
+										.rotationBy(headingDelta)
+										.setDuration(99)
+										.setInterpolator(new LinearInterpolator())
+										.start();
+					}
+				});
 				break;
 
 			case ACTION_DISCONNECTED:

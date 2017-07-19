@@ -39,4 +39,7 @@ public class BluetoothDemoConnection extends BluetoothConnection {
 
 	@Override
 	public void sendMessage(String message) {}
+
+	@Override
+	public void subscribeToHeadingNotifications(OnHeadingReadListener listener) {}
 }

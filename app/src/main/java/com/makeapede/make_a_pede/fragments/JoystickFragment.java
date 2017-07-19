@@ -28,7 +28,7 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 
 import com.makeapede.make_a_pede.R;
-import com.makeapede.make_a_pede.ui.Joystick;
+import com.makeapede.make_a_pede.ui.JoystickView;
 import com.makeapede.make_a_pede.utils.Timer;
 
 public class JoystickFragment extends ControllerFragment {
@@ -41,7 +41,7 @@ public class JoystickFragment extends ControllerFragment {
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		View layout = inflater.inflate(R.layout.joystick_fragment_layout, container, false);
 
-		Joystick joystick = layout.findViewById(R.id.joystick);
+		JoystickView joystick = layout.findViewById(R.id.joystick);
 		joystick.setJoystickTouchListener(this::processJoystickTouchEvent);
 
 		powerSlider = layout.findViewById(R.id.power_slider);
@@ -56,28 +56,28 @@ public class JoystickFragment extends ControllerFragment {
 				int rightState;
 				int leftState;
 
-				if (btTimer.elapsedTime() > btSendInterval) {
+				if (btTimer.elapsedTime() > getBtSendInterval()) {
 					int forwardValue = (int) (((height - y) / height) * 255.0f) - 127;
 					int turnValue = (int) (((x - (width / 2.0d)) / (width / 2.0d)) * 255.0d);
 
 					leftState = (int) ((forwardValue + turnValue) * ((powerSlider.getProgress()+40) / 100.0));
 					rightState = (int) ((forwardValue - turnValue) * ((powerSlider.getProgress()+40) / 100.0));
 
-					if(Integer.signum(forwardValue) < 0) {
+					if (Integer.signum(forwardValue) < 0) {
 						int temp = rightState;
 						rightState = leftState;
 						leftState = temp;
 					}
 
-					if(Integer.signum(leftState) != Integer.signum(rightState)) {
-						if(Integer.signum(turnValue) > 0) {
+					if (Integer.signum(leftState) != Integer.signum(rightState)) {
+						if (Integer.signum(turnValue) > 0) {
 							rightState = 0;
 						} else {
 							leftState = 0;
 						}
 					}
 
-					if(Integer.signum(forwardValue) < 0) {
+					if (Integer.signum(forwardValue) < 0) {
 						leftState = -1 * Math.abs(leftState);
 						rightState = -1 * Math.abs(rightState);
 					}

@@ -32,7 +32,7 @@ import android.widget.RelativeLayout;
 import com.makeapede.make_a_pede.R;
 import com.makeapede.make_a_pede.utils.Timer;
 
-public class Joystick extends RelativeLayout {
+public class JoystickView extends RelativeLayout {
 	public static final int DIMENSION_NONE = 0;
 	public static final int DIMENSION_HORIZONTAL = 1;
 	public static final int DIMENSION_VERTICAL = 2;
@@ -53,24 +53,24 @@ public class Joystick extends RelativeLayout {
 
 	private JoystickTouchListener touchListener = ((event, x, y, width, height) -> {});
 
-	public Joystick(Context context) {
+	public JoystickView(Context context) {
 		this(context, null);
 	}
 
-	public Joystick(Context context, AttributeSet attrs) {
+	public JoystickView(Context context, AttributeSet attrs) {
 		this(context, attrs, 0);
 	}
 
-	public Joystick(Context context, AttributeSet attrs, int defStyle) {
+	public JoystickView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 
 		TypedArray a = context.getTheme().obtainStyledAttributes(
 				attrs,
-				R.styleable.Joystick,
+				R.styleable.JoystickView,
 				0, 0);
 
 		try {
-			primaryDimension = a.getInt(R.styleable.Joystick_primaryDimension, 0);
+			primaryDimension = a.getInt(R.styleable.JoystickView_primaryDimension, 0);
 		} finally {
 			a.recycle();
 		}

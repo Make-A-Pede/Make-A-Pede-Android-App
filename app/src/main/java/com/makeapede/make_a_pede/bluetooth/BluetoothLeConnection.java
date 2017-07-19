@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.List;
@@ -37,8 +38,13 @@ public class BluetoothLeConnection extends BluetoothConnection {
 	private static final UUID DRIVE_UUID_CURIE = UUID.fromString("19B10001-E8F2-537E-4F6C-D104768A1214");
 	private static final UUID DRIVE_UUID_HC08 = UUID.fromString("0000FFE1-0000-1000-8000-00805F9B34FB");
 
+	private static final UUID HEADING_UUID_CURIE = UUID.fromString("19B10002-E8F2-537E-4F6C-D104768A1214");
+
 	private BluetoothLeService bluetoothLeService;
 	private BluetoothGattCharacteristic driveCharacteristic;
+	private BluetoothGattCharacteristic headingCharacteristic;
+
+	private OnHeadingReadListener headingReadListener;
 
 	public BluetoothLeConnection(Context context, String address, BluetoothConnectionEventListener listener) {
 		super(context, address, listener);
@@ -72,6 +78,13 @@ public class BluetoothLeConnection extends BluetoothConnection {
 		bluetoothLeService.writeCharacteristic(driveCharacteristic, message);
 	}
 
+	@Override
+	public void subscribeToHeadingNotifications(OnHeadingReadListener listener) {
+		//bluetoothLeService.readCharacteristic(headingCharacteristic);
+
+		headingReadListener = listener;
+	}
+
 	private final ServiceConnection serviceConnection = new ServiceConnection() {
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder service) {
@@ -97,9 +110,13 @@ public class BluetoothLeConnection extends BluetoothConnection {
 
 			connectionEventListener.onBluetoothConnectionEvent(action);
 
-			if (ACTION_SERVICES_DISCOVERED.equals(action)) {
+			if (action.equals(ACTION_SERVICES_DISCOVERED)) {
 				// Initialize GATT characteristics on GATT services discovered
 				getGattCharacteristics(bluetoothLeService.getSupportedGattServices());
+			} else if (action.equals(ACTION_DATA_AVAILABLE)) {
+				if(intent.getStringExtra(EXTRA_UUID).equals(HEADING_UUID_CURIE.toString())) {
+					headingReadListener.headingRead(intent.getStringExtra(EXTRA_DATA));
+				}
 			}
 		}
 	};
@@ -119,6 +136,11 @@ public class BluetoothLeConnection extends BluetoothConnection {
 			} else if(gattService.getCharacteristic(DRIVE_UUID_HC08) != null) {
 				driveCharacteristic = gattService.getCharacteristic(DRIVE_UUID_HC08);
 			}
+
+			if(gattService.getCharacteristic(HEADING_UUID_CURIE) != null) {
+				headingCharacteristic = gattService.getCharacteristic(HEADING_UUID_CURIE);
+				bluetoothLeService.setCharacteristicNotification(headingCharacteristic, true);
+			}
 		}
 
 		if (driveCharacteristic == null) {
@@ -133,6 +155,7 @@ public class BluetoothLeConnection extends BluetoothConnection {
 		intentFilter.addAction(ACTION_CONNECTED);
 		intentFilter.addAction(ACTION_DISCONNECTED);
 		intentFilter.addAction(ACTION_SERVICES_DISCOVERED);
+		intentFilter.addAction(ACTION_DATA_AVAILABLE);
 
 		return intentFilter;
 	}

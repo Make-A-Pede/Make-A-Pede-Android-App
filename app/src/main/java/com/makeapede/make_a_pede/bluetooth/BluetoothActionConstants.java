@@ -26,4 +26,5 @@ public interface BluetoothActionConstants {
 	String ACTION_DATA_AVAILABLE = "com.makeapede.bluetooth.ACTION_DATA_AVAILABLE";
 	String ACTION_ERROR = "com.makeapede.bluetooth.ACTION_ERROR";
 	String EXTRA_DATA = "com.makeapede.bluetooth.EXTRA_DATA";
+	String EXTRA_UUID = "com.makeapede.bluetooth.EXTRA_UUID";
 }

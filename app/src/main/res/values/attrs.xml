@@ -19,11 +19,17 @@
   -->
 
 <resources>
-	<declare-styleable name="Joystick">
-		<attr name="primaryDimension" format="enum">
-			<enum name="none" value="0"/>
-			<enum name="horizontal" value="1"/>
-			<enum name="vertical" value="2"/>
-		</attr>
+	<attr name="primaryDimension" format="enum">
+		<enum name="none" value="0"/>
+		<enum name="horizontal" value="1"/>
+		<enum name="vertical" value="2"/>
+	</attr>
+
+	<declare-styleable name="JoystickView">
+		<attr name="primaryDimension"/>
+	</declare-styleable>
+
+	<declare-styleable name="HeadingView">
+		<attr name="primaryDimension"/>
 	</declare-styleable>
 </resources>

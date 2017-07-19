@@ -74,7 +74,7 @@ public class ArrowKeyFragment extends ControllerFragment {
 		public boolean onTouch(View v, MotionEvent event) {
 			switch (event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
-					if(btTimer.elapsedTime() > btSendInterval) {
+					if(btTimer.elapsedTime() > getBtSendInterval()) {
 						double powerPercent = (powerSlider.getProgress() + 40) / 100.0;
 
 						sendMessage((int) (left * powerPercent), (int) (right * powerPercent));
