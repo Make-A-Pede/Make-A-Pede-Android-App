@@ -29,6 +29,7 @@ import android.widget.SeekBar;
 
 import com.makeapede.make_a_pede.R;
 import com.makeapede.make_a_pede.ui.JoystickView;
+import com.makeapede.make_a_pede.utils.PolarCoordinates;
 import com.makeapede.make_a_pede.utils.Timer;
 
 public class JoystickFragment extends ControllerFragment {
@@ -57,32 +58,9 @@ public class JoystickFragment extends ControllerFragment {
 				int leftState;
 
 				if (btTimer.elapsedTime() > getBtSendInterval()) {
-					int forwardValue = (int) (((height - y) / height) * 255.0f) - 127;
-					int turnValue = (int) (((x - (width / 2.0d)) / (width / 2.0d)) * 255.0d);
+					PolarCoordinates coords = PolarCoordinates.fromCartesian(x, y);
 
-					leftState = (int) ((forwardValue + turnValue) * ((powerSlider.getProgress()+40) / 100.0));
-					rightState = (int) ((forwardValue - turnValue) * ((powerSlider.getProgress()+40) / 100.0));
-
-					if (Integer.signum(forwardValue) < 0) {
-						int temp = rightState;
-						rightState = leftState;
-						leftState = temp;
-					}
-
-					if (Integer.signum(leftState) != Integer.signum(rightState)) {
-						if (Integer.signum(turnValue) > 0) {
-							rightState = 0;
-						} else {
-							leftState = 0;
-						}
-					}
-
-					if (Integer.signum(forwardValue) < 0) {
-						leftState = -1 * Math.abs(leftState);
-						rightState = -1 * Math.abs(rightState);
-					}
-
-					sendMessage(leftState, rightState);
+					sendMessage((int) coords.radius, (int) coords.angle);
 
 					btTimer.reset();
 				}

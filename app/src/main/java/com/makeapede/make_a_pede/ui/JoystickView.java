@@ -139,10 +139,13 @@ public class JoystickView extends RelativeLayout {
 			case MotionEvent.ACTION_DOWN:
 			case MotionEvent.ACTION_MOVE:
 				if (joystickTimer.elapsedTime() > JOYSTICK_RESPONSE_TIME) {
-					int x = (int) event.getX();
-					int y = (int) event.getY();
+					int eventX = (int) event.getX();
+					int eventY = (int) event.getY();
 
-					moveDotToPos(x, y);
+					moveDotToPos(eventX, eventY);
+
+					int x = (int) (((eventX - (joystickWidth/2.0)) / joystickWidth/2.0) * 100);
+					int y = (int) ((((joystickHeight-eventY) - (joystickHeight/2.0)) / joystickHeight/2.0) * 100);
 
 					touchListener.onTouch(event, x, y, joystickWidth, joystickHeight);
 

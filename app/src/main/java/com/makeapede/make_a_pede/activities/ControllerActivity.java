@@ -74,7 +74,7 @@ public class ControllerActivity extends AppCompatActivity implements BluetoothCo
 	private View headingIndicator;
 
 	private int currentHeading;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -157,14 +157,14 @@ public class ControllerActivity extends AppCompatActivity implements BluetoothCo
 	private void setDrive(int leftState, int rightState) {
 		Log.i(TAG, "Left: " + leftState + ", Right: " + rightState);
 
-		leftState += 127;
+		/*leftState += 127;
 		rightState += 127;
 
 		leftState = Math.min(leftState, 255);
 		rightState = Math.min(rightState, 255);
 
 		leftState = Math.max(leftState, 0);
-		rightState = Math.max(rightState, 0);
+		rightState = Math.max(rightState, 0);*/
 
 		String left = Integer.toString(leftState);
 		while (left.length() < 3) {
