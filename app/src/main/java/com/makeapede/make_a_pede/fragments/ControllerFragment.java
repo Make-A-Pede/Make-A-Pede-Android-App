@@ -38,9 +38,9 @@ public abstract class ControllerFragment extends Fragment {
 	public abstract void setSpeedPercent(int percent);
 	public abstract int getSpeedPercent();
 
-	public void sendMessage(int left, int right) {
+	public void sendMessage(int radius, int angle) {
 		if (messageListener != null) {
-			messageListener.sendMessage(left, right);
+			messageListener.sendMessage(radius, angle);
 		}
 	}
 
@@ -57,6 +57,6 @@ public abstract class ControllerFragment extends Fragment {
 	}
 
 	public interface OnShouldSendMessageListener {
-		void sendMessage(int leftValue, int rightValue);
+		void sendMessage(int radius, int angle);
 	}
 }

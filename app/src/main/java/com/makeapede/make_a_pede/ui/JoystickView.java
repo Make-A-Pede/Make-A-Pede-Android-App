@@ -22,6 +22,7 @@ package com.makeapede.make_a_pede.ui;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -139,10 +140,13 @@ public class JoystickView extends RelativeLayout {
 			case MotionEvent.ACTION_DOWN:
 			case MotionEvent.ACTION_MOVE:
 				if (joystickTimer.elapsedTime() > JOYSTICK_RESPONSE_TIME) {
-					int x = (int) event.getX();
-					int y = (int) event.getY();
+					float eventX = event.getX();
+					float eventY = event.getY();
 
-					moveDotToPos(x, y);
+					moveDotToPos((int) eventX, (int) eventY);
+
+					int x = (int) ((eventX - (joystickWidth/2.0)) * (100.0 / (joystickWidth/2.0)));
+					int y = (int) (((joystickHeight/2.0) - eventY) * (100.0 / (joystickWidth/2.0)));
 
 					touchListener.onTouch(event, x, y, joystickWidth, joystickHeight);
 
