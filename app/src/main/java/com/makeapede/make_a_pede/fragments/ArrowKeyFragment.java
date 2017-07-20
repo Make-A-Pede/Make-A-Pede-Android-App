@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 
 import com.makeapede.make_a_pede.R;
+import com.makeapede.make_a_pede.utils.PolarCoordinates;
 import com.makeapede.make_a_pede.utils.Timer;
 
 public class ArrowKeyFragment extends ControllerFragment {
@@ -44,15 +45,15 @@ public class ArrowKeyFragment extends ControllerFragment {
 
 		powerSlider = layout.findViewById(R.id.power_slider);
 
-		setTouchListenerOnView(R.id.up_arrow, new OnArrowClickedListener(127, 127));
-		setTouchListenerOnView(R.id.left_arrow, new OnArrowClickedListener(0, 127));
-		setTouchListenerOnView(R.id.right_arrow, new OnArrowClickedListener(127, 0));
-		setTouchListenerOnView(R.id.down_arrow, new OnArrowClickedListener(-127, -127));
+		setTouchListenerOnView(R.id.up_arrow, new OnArrowClickedListener(0, 100));
+		setTouchListenerOnView(R.id.left_arrow, new OnArrowClickedListener(-100, 0));
+		setTouchListenerOnView(R.id.right_arrow, new OnArrowClickedListener(100, 0));
+		setTouchListenerOnView(R.id.down_arrow, new OnArrowClickedListener(0, -100));
 
-		setTouchListenerOnView(R.id.up_left_arrow, new OnArrowClickedListener(42, 127));
-		setTouchListenerOnView(R.id.down_left_arrow, new OnArrowClickedListener(-42, -127));
-		setTouchListenerOnView(R.id.up_right_arrow, new OnArrowClickedListener(127, 42));
-		setTouchListenerOnView(R.id.down_right_arrow, new OnArrowClickedListener(-127, -42));
+		setTouchListenerOnView(R.id.up_left_arrow, new OnArrowClickedListener(-100, 100));
+		setTouchListenerOnView(R.id.down_left_arrow, new OnArrowClickedListener(-100, -100));
+		setTouchListenerOnView(R.id.up_right_arrow, new OnArrowClickedListener(100, 100));
+		setTouchListenerOnView(R.id.down_right_arrow, new OnArrowClickedListener(100, -100));
 
 		return layout;
 	}
@@ -62,12 +63,12 @@ public class ArrowKeyFragment extends ControllerFragment {
 	}
 
 	private class OnArrowClickedListener implements View.OnTouchListener {
-		private final int left;
-		private final int right;
+		private final int x;
+		private final int y;
 
-		OnArrowClickedListener(int left, int right) {
-			this.left = left;
-			this.right = right;
+		OnArrowClickedListener(int x, int y) {
+			this.x = x;
+			this.y = y;
 		}
 
 		@Override
@@ -77,7 +78,11 @@ public class ArrowKeyFragment extends ControllerFragment {
 					if(btTimer.elapsedTime() > getBtSendInterval()) {
 						double powerPercent = (powerSlider.getProgress() + 40) / 100.0;
 
-						sendMessage((int) (left * powerPercent), (int) (right * powerPercent));
+						PolarCoordinates coords = PolarCoordinates.fromCartesian(x, y);
+
+						coords.radius = coords.radius * powerPercent;
+
+						sendMessage((int) coords.radius, (int) coords.angle);
 
 						btTimer.reset();
 					}

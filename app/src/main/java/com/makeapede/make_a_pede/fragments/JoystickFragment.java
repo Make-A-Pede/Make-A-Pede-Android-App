@@ -58,7 +58,11 @@ public class JoystickFragment extends ControllerFragment {
 				int leftState;
 
 				if (btTimer.elapsedTime() > getBtSendInterval()) {
+					double powerPercent = (powerSlider.getProgress() + 40) / 100.0;
+
 					PolarCoordinates coords = PolarCoordinates.fromCartesian(x, y);
+
+					coords.radius = coords.radius * powerPercent;
 
 					sendMessage((int) coords.radius, (int) coords.angle);
 
