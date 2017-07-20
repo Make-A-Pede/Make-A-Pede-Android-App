@@ -148,35 +148,18 @@ public class ControllerActivity extends AppCompatActivity implements BluetoothCo
 		}
 	}
 
-	/**
-	 * Set the left and right drive speeds of the Make-A-Pede over Bluetooth
-	 *
-	 * @param leftState left speed
-	 * @param rightState right speed
-	 */
-	private void setDrive(int leftState, int rightState) {
-		Log.i(TAG, "Left: " + leftState + ", Right: " + rightState);
-
-		/*leftState += 127;
-		rightState += 127;
-
-		leftState = Math.min(leftState, 255);
-		rightState = Math.min(rightState, 255);
-
-		leftState = Math.max(leftState, 0);
-		rightState = Math.max(rightState, 0);*/
-
-		String left = Integer.toString(leftState);
-		while (left.length() < 3) {
-			left = "0" + left;
+	private void setDrive(int radius, int angle) {
+		String radiusString = Integer.toString(radius);
+		while (radiusString.length() < 3) {
+			radiusString = "0" + radius;
 		}
 
-		String right = Integer.toString(rightState);
-		while (right.length() < 3) {
-			right = "0" + right;
+		String angleString = Integer.toString(angle);
+		while (angleString.length() < 3) {
+			angleString = "0" + angleString;
 		}
 
-		String message = left + ":" + right + ":";
+		String message = radiusString + ":" + angleString + ":";
 
 		bluetoothConnection.sendMessage(message);
 	}
