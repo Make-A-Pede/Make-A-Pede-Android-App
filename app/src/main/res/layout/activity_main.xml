@@ -30,6 +30,7 @@
 		android:layout_height="5dp"
 		android:background="@color/colorAccent"
 		android:rotation="90"
+		android:visibility="invisible"
 		app:layout_constraintBottom_toBottomOf="@+id/fragment_container"
 		app:layout_constraintLeft_toLeftOf="@+id/fragment_container"
 		app:layout_constraintRight_toRightOf="@+id/fragment_container"

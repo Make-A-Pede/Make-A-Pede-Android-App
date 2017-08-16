@@ -151,7 +151,7 @@ public class ControllerActivity extends AppCompatActivity implements BluetoothCo
 	private void setDrive(int radius, int angle) {
 		String radiusString = Integer.toString(radius);
 		while (radiusString.length() < 3) {
-			radiusString = "0" + radius;
+			radiusString = "0" + radiusString;
 		}
 
 		String angleString = Integer.toString(angle);
@@ -250,6 +250,8 @@ public class ControllerActivity extends AppCompatActivity implements BluetoothCo
 
 						int headingDelta = r-currentHeading;
 						currentHeading = r;
+
+						headingIndicator.setVisibility(View.VISIBLE);
 
 						headingIndicator.animate()
 										.rotationBy(headingDelta)

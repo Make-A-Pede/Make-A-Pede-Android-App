@@ -153,7 +153,7 @@ public class JoystickView extends RelativeLayout {
 					joystickTimer.reset();
 				}
 
-				break;
+				return true;
 			case MotionEvent.ACTION_UP:
 			case MotionEvent.ACTION_CANCEL:
 				centerDot();
@@ -164,10 +164,10 @@ public class JoystickView extends RelativeLayout {
 						joystickWidth,
 						joystickHeight);
 
-				break;
+				return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	public void setPrimaryDimension(int dimension) {
