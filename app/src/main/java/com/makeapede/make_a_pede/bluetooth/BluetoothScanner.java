@@ -22,6 +22,9 @@ package com.makeapede.make_a_pede.bluetooth;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanResult;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -32,24 +35,26 @@ import android.widget.Toast;
 
 import com.makeapede.make_a_pede.R;
 
-public class BluetoothScanner {
+public class BluetoothScanner extends ScanCallback {
 	private BluetoothScanEventListener scanEventListener;
 	private Context context;
 	protected boolean scanning = false;
 
 	protected BluetoothAdapter btAdapter;
+	private BluetoothLeScanner leScanner;
 
 	public BluetoothScanner(Context context) throws BluetoothNotSupportedException {
 		this.context = context;
 
 		final BluetoothManager bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
 		btAdapter = bluetoothManager.getAdapter();
+		leScanner = btAdapter.getBluetoothLeScanner();
 
 		if (!context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
 			Toast.makeText(context, context.getText(R.string.ble_not_supported), Toast.LENGTH_SHORT).show();
 		}
 
-		if (btAdapter == null) {
+		if (btAdapter == null || leScanner == null) {
 			throw new BluetoothNotSupportedException();
 		}
 	}
@@ -60,10 +65,7 @@ public class BluetoothScanner {
 
 			this.scanEventListener = scanEventListener;
 
-			IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-			getContext().registerReceiver(deviceScanBroadcastReceiver, filter);
-
-			btAdapter.startDiscovery();
+			leScanner.startScan(this);
 
 			new Handler().postDelayed(this::stopScan, period);
 		}
@@ -73,10 +75,15 @@ public class BluetoothScanner {
 		if (isScanning()) {
 			scanning = false;
 
-			getContext().unregisterReceiver(deviceScanBroadcastReceiver);
-
 			scanEventListener.onScanComplete();
+
+			leScanner.stopScan(this);
 		}
+	}
+
+	@Override
+	public void onScanResult(int callbackType, ScanResult result) {
+		scanEventListener.onDeviceFound(result.getDevice());
 	}
 
 	public Context getContext() {
@@ -90,17 +97,6 @@ public class BluetoothScanner {
 	public boolean isScanning() {
 		return scanning;
 	}
-
-	private final BroadcastReceiver deviceScanBroadcastReceiver = new BroadcastReceiver() {
-		public void onReceive(Context context, Intent intent) {
-			String action = intent.getAction();
-
-			if (action.equals(BluetoothDevice.ACTION_FOUND)) {
-				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-				scanEventListener.onDeviceFound(device);
-			}
-		}
-	};
 
 	public interface BluetoothScanEventListener {
 		void onDeviceFound(BluetoothDevice device);

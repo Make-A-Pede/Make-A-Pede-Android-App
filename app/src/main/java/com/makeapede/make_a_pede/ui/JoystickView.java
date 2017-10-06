@@ -31,6 +31,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.makeapede.make_a_pede.R;
+import com.makeapede.make_a_pede.utils.CartesianCoordinates;
+import com.makeapede.make_a_pede.utils.PolarCoordinates;
 import com.makeapede.make_a_pede.utils.Timer;
 
 public class JoystickView extends RelativeLayout {
@@ -52,7 +54,7 @@ public class JoystickView extends RelativeLayout {
 
 	private boolean measured = false;
 
-	private JoystickTouchListener touchListener = ((event, x, y, width, height) -> {});
+	private JoystickTouchListener touchListener = ((event, coords) -> {});
 
 	public JoystickView(Context context) {
 		this(context, null);
@@ -143,12 +145,17 @@ public class JoystickView extends RelativeLayout {
 					float eventX = event.getX();
 					float eventY = event.getY();
 
-					moveDotToPos((int) eventX, (int) eventY);
+					float width = joystickWidth-dotSize;
+					float height = joystickHeight-dotSize;
 
 					int x = (int) ((eventX - (joystickWidth/2.0)) * (100.0 / (joystickWidth/2.0)));
 					int y = (int) (((joystickHeight/2.0) - eventY) * (100.0 / (joystickWidth/2.0)));
 
-					touchListener.onTouch(event, x, y, joystickWidth, joystickHeight);
+					PolarCoordinates coords = PolarCoordinates.fromCartesian(x, y);
+
+					moveDotToPos(coords);
+
+					touchListener.onTouch(event, coords);
 
 					joystickTimer.reset();
 				}
@@ -158,11 +165,7 @@ public class JoystickView extends RelativeLayout {
 			case MotionEvent.ACTION_CANCEL:
 				centerDot();
 
-				touchListener.onTouch(event,
-						(int) joystickWidth/2,
-						(int) joystickHeight/2,
-						joystickWidth,
-						joystickHeight);
+				touchListener.onTouch(event, new PolarCoordinates(0, 0));
 
 				return true;
 		}
@@ -192,7 +195,22 @@ public class JoystickView extends RelativeLayout {
 		dot.setLayoutParams(params);
 	}
 
-	private void moveDotToPos(int x, int y) {
+	private void moveDotToPos(PolarCoordinates coords) {
+		float halfDot = ((dotSize/joystickWidth)*200)/2;
+
+		if(coords.radius + halfDot > 100) {
+			coords.radius = 100 - halfDot;
+		}
+
+		int x = CartesianCoordinates.fromPolar(coords).x;
+		int y = CartesianCoordinates.fromPolar(coords).y;
+
+		x += 100;
+		y = Math.abs(y-100);
+
+		x *= joystickWidth / 200.0;
+		y *= joystickHeight / 200.0;
+
 		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) dot.getLayoutParams();
 
 		params.leftMargin = x - (dotSize / 2);
@@ -206,6 +224,6 @@ public class JoystickView extends RelativeLayout {
 	}
 
 	public interface JoystickTouchListener {
-		void onTouch(MotionEvent event, int x, int y, float width, float height);
+		void onTouch(MotionEvent event, PolarCoordinates coords);
 	}
 }

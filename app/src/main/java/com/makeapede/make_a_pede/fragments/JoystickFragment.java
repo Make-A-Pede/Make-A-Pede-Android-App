@@ -50,7 +50,7 @@ public class JoystickFragment extends ControllerFragment {
 		return layout;
 	}
 
-	private void processJoystickTouchEvent(MotionEvent event, int x, int y, float width, float height) {
+	private void processJoystickTouchEvent(MotionEvent event, PolarCoordinates coords) {
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
 			case MotionEvent.ACTION_MOVE:
@@ -59,8 +59,6 @@ public class JoystickFragment extends ControllerFragment {
 
 				if (btTimer.elapsedTime() > getBtSendInterval()) {
 					double powerPercent = (powerSlider.getProgress() + 40) / 100.0;
-
-					PolarCoordinates coords = PolarCoordinates.fromCartesian(x, y);
 
 					coords.radius = coords.radius * powerPercent;
 
