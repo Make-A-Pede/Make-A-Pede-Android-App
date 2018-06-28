@@ -29,8 +29,14 @@ import android.widget.SeekBar;
 
 import com.makeapede.make_a_pede.R;
 import com.makeapede.make_a_pede.ui.JoystickView;
+import com.makeapede.make_a_pede.utils.CartesianCoordinates;
+import com.makeapede.make_a_pede.utils.MotorValues;
 import com.makeapede.make_a_pede.utils.PolarCoordinates;
 import com.makeapede.make_a_pede.utils.Timer;
+
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+import static java.lang.Math.signum;
 
 public class JoystickFragment extends ControllerFragment {
 	private Timer btTimer = new Timer();
@@ -54,15 +60,14 @@ public class JoystickFragment extends ControllerFragment {
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
 			case MotionEvent.ACTION_MOVE:
-				int rightState;
-				int leftState;
-
 				if (btTimer.elapsedTime() > getBtSendInterval()) {
 					double powerPercent = (powerSlider.getProgress() + 40) / 100.0;
 
 					coords.radius = coords.radius * powerPercent;
 
-					sendMessage((int) coords.radius, (int) coords.angle);
+					MotorValues values = new MotorValues(coords);
+
+					sendMessage(values.left, values.right);
 
 					btTimer.reset();
 				}
@@ -70,10 +75,7 @@ public class JoystickFragment extends ControllerFragment {
 				break;
 			case MotionEvent.ACTION_UP:
 			case MotionEvent.ACTION_CANCEL:
-				leftState = 0;
-				rightState = 0;
-
-				sendMessage(leftState, rightState);
+				sendMessage(255, 255);
 
 				break;
 		}
@@ -81,7 +83,7 @@ public class JoystickFragment extends ControllerFragment {
 
 	@Override
 	public void setSpeedPercent(int percent) {
-		powerSlider.setProgress(Math.max(percent-40, 0));
+		powerSlider.setProgress(max(percent-40, 0));
 	}
 
 	@Override

@@ -19,10 +19,11 @@
 
 <resources>
 
-	<style name="AppTheme" parent="Theme.AppCompat">
+	<style name="AppTheme" parent="Base.Theme.AppCompat">
 		<item name="colorPrimary">@color/colorAccent</item>
 		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
 		<item name="colorAccent">@color/colorAccent</item>
+		<item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
 
 		<item name="android:textColorPrimary">@color/darkGray</item>
 

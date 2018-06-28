@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 
 import com.makeapede.make_a_pede.R;
+import com.makeapede.make_a_pede.utils.MotorValues;
 import com.makeapede.make_a_pede.utils.PolarCoordinates;
 import com.makeapede.make_a_pede.utils.Timer;
 
@@ -82,7 +83,9 @@ public class ArrowKeyFragment extends ControllerFragment {
 
 						coords.radius = coords.radius * powerPercent;
 
-						sendMessage((int) coords.radius, (int) coords.angle);
+						MotorValues values = new MotorValues(coords);
+
+						sendMessage(values.left, values.right);
 
 						btTimer.reset();
 					}
@@ -91,7 +94,7 @@ public class ArrowKeyFragment extends ControllerFragment {
 
 				case MotionEvent.ACTION_UP:
 				case MotionEvent.ACTION_CANCEL:
-					sendMessage(0, 0);
+					sendMessage(255, 255);
 
 					break;
 			}

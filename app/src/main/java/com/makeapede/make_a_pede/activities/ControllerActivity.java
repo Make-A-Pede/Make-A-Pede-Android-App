@@ -148,15 +148,15 @@ public class ControllerActivity extends AppCompatActivity implements BluetoothCo
 		}
 	}
 
-	private void setDrive(int radius, int angle) {
-		String radiusString = Integer.toString(radius);
+	private void setDrive(int left, int right) {
+		StringBuilder radiusString = new StringBuilder(Integer.toString(left));
 		while (radiusString.length() < 3) {
-			radiusString = "0" + radiusString;
+			radiusString.insert(0, "0");
 		}
 
-		String angleString = Integer.toString(angle);
+		StringBuilder angleString = new StringBuilder(Integer.toString(right));
 		while (angleString.length() < 3) {
-			angleString = "0" + angleString;
+			angleString.insert(0, "0");
 		}
 
 		String message = radiusString + ":" + angleString + ":";
