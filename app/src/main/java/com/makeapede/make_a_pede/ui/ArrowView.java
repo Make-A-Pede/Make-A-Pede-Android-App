@@ -22,48 +22,40 @@ package com.makeapede.make_a_pede.ui;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.makeapede.make_a_pede.R;
-import com.makeapede.make_a_pede.utils.CartesianCoordinates;
 import com.makeapede.make_a_pede.utils.PolarCoordinates;
 import com.makeapede.make_a_pede.utils.Timer;
 
-public class JoystickView extends RelativeLayout {
+public class ArrowView extends RelativeLayout {
 	public static final int DIMENSION_NONE = 0;
 	public static final int DIMENSION_HORIZONTAL = 1;
 	public static final int DIMENSION_VERTICAL = 2;
 
 	private static final int JOYSTICK_RESPONSE_TIME = 10;
 
-	private ImageView dot;
-
 	private Timer joystickTimer = new Timer();
 
-	private int dotSize;
 	private float joystickHeight;
 	private float joystickWidth;
 
 	private int primaryDimension = DIMENSION_NONE;
 
-	private boolean measured = false;
-
 	private JoystickTouchListener touchListener = ((event, coords) -> {});
 
-	public JoystickView(Context context) {
+	public ArrowView(Context context) {
 		this(context, null);
 	}
 
-	public JoystickView(Context context, AttributeSet attrs) {
+	public ArrowView(Context context, AttributeSet attrs) {
 		this(context, attrs, 0);
 	}
 
-	public JoystickView(Context context, AttributeSet attrs, int defStyle) {
+	public ArrowView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 
 		TypedArray a = context.getTheme().obtainStyledAttributes(
@@ -80,24 +72,8 @@ public class JoystickView extends RelativeLayout {
 		invalidate();
 		requestLayout();
 
-		initializeViews(context);
-	}
-
-	private void initializeViews(Context context) {
-		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		inflater.inflate(R.layout.joystick_layout, this);
-
-		dotSize = dpToPx(100);
-
-		setBackgroundResource(R.drawable.border);
+		setBackgroundResource(R.mipmap.arrows_background);
 		setOnTouchListener(this::onJoystickTouch);
-	}
-
-	@Override
-	protected void onFinishInflate() {
-		super.onFinishInflate();
-
-		dot = findViewById(R.id.dot);
 	}
 
 	@SuppressWarnings("SuspiciousNameCombination")
@@ -119,23 +95,6 @@ public class JoystickView extends RelativeLayout {
 		}
 	}
 
-	@Override
-	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		super.onLayout(changed, l, t, r, b);
-
-		if(!measured) {
-			centerDot();
-
-			measured = true;
-		}
-	}
-
-	@Override
-	public void invalidate() {
-		measured = false;
-		super.invalidate();
-	}
-
 	private boolean onJoystickTouch(View v, MotionEvent event) {
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
@@ -144,15 +103,10 @@ public class JoystickView extends RelativeLayout {
 					float eventX = event.getX();
 					float eventY = event.getY();
 
-					float width = joystickWidth-dotSize;
-					float height = joystickHeight-dotSize;
-
 					int x = (int) ((eventX - (joystickWidth/2.0)) * (100.0 / (joystickWidth/2.0)));
 					int y = (int) (((joystickHeight/2.0) - eventY) * (100.0 / (joystickWidth/2.0)));
 
 					PolarCoordinates coords = PolarCoordinates.fromCartesian(x, y);
-
-					moveDotToPos(coords);
 
 					touchListener.onTouch(event, coords);
 
@@ -162,14 +116,16 @@ public class JoystickView extends RelativeLayout {
 				return true;
 			case MotionEvent.ACTION_UP:
 			case MotionEvent.ACTION_CANCEL:
-				centerDot();
-
 				touchListener.onTouch(event, new PolarCoordinates(0, 0));
 
 				return true;
 		}
 
 		return false;
+	}
+
+	public void setJoystickTouchListener(JoystickTouchListener listener) {
+		touchListener = listener;
 	}
 
 	public void setPrimaryDimension(int dimension) {
@@ -179,47 +135,6 @@ public class JoystickView extends RelativeLayout {
 
 	public int getPrimaryDimension() {
 		return primaryDimension;
-	}
-
-	public void setJoystickTouchListener(JoystickTouchListener listener) {
-		touchListener = listener;
-	}
-
-	private void centerDot() {
-		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) dot.getLayoutParams();
-
-		params.leftMargin = (int) ((joystickWidth / 2f) - (dotSize / 2f));
-		params.topMargin = (int) ((joystickHeight / 2f) - (dotSize / 2f));
-
-		dot.setLayoutParams(params);
-	}
-
-	private void moveDotToPos(PolarCoordinates coords) {
-		float halfDot = ((dotSize/joystickWidth)*200)/2;
-
-		if(coords.radius + halfDot > 100) {
-			coords.radius = 100 - halfDot;
-		}
-
-		int x = CartesianCoordinates.fromPolar(coords).x;
-		int y = CartesianCoordinates.fromPolar(coords).y;
-
-		x += 100;
-		y = Math.abs(y-100);
-
-		x *= joystickWidth / 200.0;
-		y *= joystickHeight / 200.0;
-
-		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) dot.getLayoutParams();
-
-		params.leftMargin = x - (dotSize / 2);
-		params.topMargin = y - (dotSize / 2);
-
-		dot.setLayoutParams(params);
-	}
-
-	private int dpToPx(int dp) {
-		return (int) TypedValue.applyDimension(1, (float) dp, getResources().getDisplayMetrics());
 	}
 
 	public interface JoystickTouchListener {

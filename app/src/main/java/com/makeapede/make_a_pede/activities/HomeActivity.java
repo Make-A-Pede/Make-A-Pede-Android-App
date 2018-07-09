@@ -143,6 +143,9 @@ public class HomeActivity extends AppCompatActivity {
 				intent.putExtra(EXTRA_DEMO, true);
 				startActivity(intent);
 				break;
+			case R.id.action_open_info:
+				startActivity(new Intent(this, InfoActivity.class));
+				break;
 		}
 
 		return true;

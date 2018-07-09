@@ -20,6 +20,7 @@
 package com.makeapede.make_a_pede.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -29,29 +30,22 @@ import android.widget.SeekBar;
 
 import com.makeapede.make_a_pede.R;
 import com.makeapede.make_a_pede.ui.JoystickView;
-import com.makeapede.make_a_pede.utils.CartesianCoordinates;
 import com.makeapede.make_a_pede.utils.MotorValues;
 import com.makeapede.make_a_pede.utils.PolarCoordinates;
 import com.makeapede.make_a_pede.utils.Timer;
 
 import static java.lang.Math.max;
-import static java.lang.Math.min;
-import static java.lang.Math.signum;
 
 public class JoystickFragment extends ControllerFragment {
 	private Timer btTimer = new Timer();
 
-	private SeekBar powerSlider;
-
 	@Nullable
 	@Override
-	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		View layout = inflater.inflate(R.layout.joystick_fragment_layout, container, false);
 
 		JoystickView joystick = layout.findViewById(R.id.joystick);
 		joystick.setJoystickTouchListener(this::processJoystickTouchEvent);
-
-		powerSlider = layout.findViewById(R.id.power_slider);
 
 		return layout;
 	}
@@ -61,13 +55,7 @@ public class JoystickFragment extends ControllerFragment {
 			case MotionEvent.ACTION_DOWN:
 			case MotionEvent.ACTION_MOVE:
 				if (btTimer.elapsedTime() > getBtSendInterval()) {
-					double powerPercent = (powerSlider.getProgress() + 40) / 100.0;
-
-					coords.radius = coords.radius * powerPercent;
-
-					MotorValues values = new MotorValues(coords);
-
-					sendMessage(values.left, values.right);
+					sendMessage(new MotorValues(coords));
 
 					btTimer.reset();
 				}
@@ -75,19 +63,9 @@ public class JoystickFragment extends ControllerFragment {
 				break;
 			case MotionEvent.ACTION_UP:
 			case MotionEvent.ACTION_CANCEL:
-				sendMessage(255, 255);
+				sendMessage(new MotorValues(0, 0));
 
 				break;
 		}
-	}
-
-	@Override
-	public void setSpeedPercent(int percent) {
-		powerSlider.setProgress(max(percent-40, 0));
-	}
-
-	@Override
-	public int getSpeedPercent() {
-		return powerSlider.getProgress()+40;
 	}
 }

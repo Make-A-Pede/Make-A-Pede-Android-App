@@ -29,9 +29,18 @@
 	<string name="connect_btn_text">Connect to Make-A-Pede</string>
 	<string name="action_joystick">Joystick</string>
 	<string name="action_arrows">Arrows</string>
+	<string name="action_sliders">Sliders</string>
 	<string name="joystick_demo_action">Joystick Demo</string>
 	<string name="available_devices">Available Devices</string>
 	<string name="bluetooth_protocol">Bluetooth Protocol</string>
 	<string name="protocol_ble">BLE</string>
 	<string name="protocol_spp">SPP</string>
+	<string name="info_activity_title">Info</string>
+	<string name="app_title_info_page">Official Make-A-Pede Controller App</string>
+	<string name="app_version_text">Version: 2.0</string>
+	<string name="arduino_library_version_text">Arduino Library Version: 1.1.0</string>
+	<string name="source_link">https://github.com/Make-A-Pede/Make-A-Pede-Android-App</string>
+	<string name="source_text">Source</string>
+	<string name="license_button_text">License</string>
+	<string name="credits_button_text">Credits</string>
 </resources>

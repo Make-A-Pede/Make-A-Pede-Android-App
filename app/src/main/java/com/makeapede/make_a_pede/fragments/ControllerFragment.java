@@ -21,6 +21,7 @@ package com.makeapede.make_a_pede.fragments;
 
 import android.support.v4.app.Fragment;
 
+import com.makeapede.make_a_pede.utils.MotorValues;
 import com.makeapede.make_a_pede.utils.Timer;
 
 /**
@@ -35,12 +36,9 @@ public abstract class ControllerFragment extends Fragment {
 	protected OnShouldSendMessageListener messageListener;
 	private int btSendInterval = 100;
 
-	public abstract void setSpeedPercent(int percent);
-	public abstract int getSpeedPercent();
-
-	public void sendMessage(int left, int right) {
+	public void sendMessage(MotorValues values) {
 		if (messageListener != null) {
-			messageListener.sendMessage(left, right);
+			messageListener.sendMessage(values);
 		}
 	}
 
@@ -57,6 +55,6 @@ public abstract class ControllerFragment extends Fragment {
 	}
 
 	public interface OnShouldSendMessageListener {
-		void sendMessage(int radius, int angle);
+		void sendMessage(MotorValues values);
 	}
 }

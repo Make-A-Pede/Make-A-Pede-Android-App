@@ -24,18 +24,27 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Handler;
+import android.os.ParcelUuid;
 import android.widget.Toast;
 
 import com.makeapede.make_a_pede.R;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 public class BluetoothScanner extends ScanCallback {
+	private static final UUID HC08_SERVICE_UUID = UUID.fromString("0000FFE0-0000-1000-8000-00805F9B34FB");
+
 	private BluetoothScanEventListener scanEventListener;
 	private Context context;
 	protected boolean scanning = false;
@@ -65,7 +74,18 @@ public class BluetoothScanner extends ScanCallback {
 
 			this.scanEventListener = scanEventListener;
 
-			leScanner.startScan(this);
+			ScanFilter scanFilter = new ScanFilter.Builder()
+					.setServiceUuid(new ParcelUuid(HC08_SERVICE_UUID))
+					.build();
+
+			List<ScanFilter> filters = new ArrayList<>();
+			filters.add(scanFilter);
+
+			ScanSettings settings = new ScanSettings.Builder()
+					.setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+					.build();
+
+			leScanner.startScan(filters, settings, this);
 
 			new Handler().postDelayed(this::stopScan, period);
 		}

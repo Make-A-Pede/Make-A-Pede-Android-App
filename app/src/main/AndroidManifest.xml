@@ -16,21 +16,21 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   ~
-  -->
-
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-		  package="com.makeapede.make_a_pede">
+	package="com.makeapede.make_a_pede">
 
-	<uses-permission android:name="android.permission.BLUETOOTH"/>
-	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-	<uses-permission android:name="android.permission.VIBRATE"/>
+	<uses-permission android:name="android.permission.BLUETOOTH" />
+	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+	<uses-permission android:name="android.permission.VIBRATE" />
 
 	<uses-feature
 		android:name="android.hardware.bluetooth_le"
-		android:required="true"/>
+		android:required="true" />
 
-	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-	<uses-feature android:name="android.hardware.location.gps"/>
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+	<uses-feature android:name="android.hardware.location.gps" />
 
 	<application
 		android:allowBackup="true"
@@ -43,32 +43,42 @@
 			android:parentActivityName=".activities.HomeActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
-				android:value=".activities.HomeActivity"/>
+				android:value=".activities.HomeActivity" />
 		</activity>
 
 		<service
 			android:name=".bluetooth.BluetoothLeService"
-			android:enabled="true"/>
+			android:enabled="true" />
 
 		<activity
 			android:name=".activities.ControllerActivity"
+			android:configChanges="screenSize|orientation"
 			android:parentActivityName=".activities.DeviceListActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
-				android:value=".activities.DeviceListActivity"/>
+				android:value=".activities.DeviceListActivity" />
 		</activity>
 		<activity
 			android:name=".activities.HomeActivity"
 			android:theme="@style/AppTheme.TransparentActionBar">
 			<intent-filter>
-				<action android:name="android.intent.action.MAIN"/>
+				<action android:name="android.intent.action.MAIN" />
 
-				<category android:name="android.intent.category.LAUNCHER"/>
+				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
+
 		<meta-data
 			android:name="io.fabric.ApiKey"
-			android:value="2eb59291ae2f7db5e0e907de38b47a80a51ce036"/>
+			android:value="2eb59291ae2f7db5e0e907de38b47a80a51ce036" />
+
+		<activity
+			android:name=".activities.InfoActivity"
+			android:parentActivityName=".activities.HomeActivity">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value=".activities.HomeActivity" />
+		</activity>
 	</application>
 
 </manifest>

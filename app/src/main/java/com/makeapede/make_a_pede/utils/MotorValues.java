@@ -40,16 +40,13 @@ public class MotorValues {
 			right = temp;
 		}
 
-		left = left * (255/50);
-		right = right * (255/50);
+		left = left * (255 / 50);
+		right = right * (255 / 50);
 
 		left = min(left, 255);
 		left = max(left, -255);
 
 		right = min(right, 255);
 		right = max(right, -255);
-
-		left = left + 255;
-		right = right + 255;
 	}
 }

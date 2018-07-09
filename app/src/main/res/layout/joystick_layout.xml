@@ -24,12 +24,12 @@
 	   android:layout_height="match_parent">
 
 	<ImageView
-		android:background="@drawable/circle"
+		android:background="@drawable/joystick_handle"
 		android:id="@+id/dot"
-		android:layout_height="30dp"
-		android:layout_marginLeft="135dp"
-		android:layout_marginTop="135dp"
-		android:layout_width="30dp"
-		app:srcCompat="@drawable/circle"/>
+		android:layout_height="100dp"
+		android:layout_marginLeft="100dp"
+		android:layout_marginTop="100dp"
+		android:layout_width="100dp"
+		app:srcCompat="@drawable/joystick_handle"/>
 
 </merge>

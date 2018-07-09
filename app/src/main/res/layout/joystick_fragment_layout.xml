@@ -29,44 +29,15 @@
 		android:layout_height="wrap_content"
 		android:layout_width="0dp"
 		app:layout_constraintTop_toTopOf="parent"
-		android:layout_marginTop="8dp"
-		android:layout_marginRight="8dp"
-		app:layout_constraintRight_toRightOf="parent"
-		android:layout_marginLeft="8dp"
-		app:layout_constraintLeft_toLeftOf="parent"
-		app:layout_constraintBottom_toBottomOf="parent"
-		android:layout_marginBottom="8dp"
-		android:layout_marginStart="8dp"
-		android:layout_marginEnd="8dp"
-		app:primaryDimension="horizontal"/>
-
-	<SeekBar
-		android:id="@+id/power_slider"
-		android:layout_width="0dp"
-		android:layout_height="wrap_content"
-		android:layout_marginBottom="8dp"
-		android:layout_marginLeft="8dp"
-		android:layout_marginRight="8dp"
-		android:layout_marginTop="8dp"
-		android:max="60"
-		android:progress="60"
-		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintLeft_toLeftOf="parent"
-		app:layout_constraintRight_toRightOf="parent"
-		app:layout_constraintTop_toBottomOf="@+id/joystick"/>
-
-	<View
-		android:id="@+id/view"
-		android:layout_width="0dp"
-		android:layout_height="1dp"
-		android:layout_marginBottom="8dp"
-		android:layout_marginLeft="0dp"
+		android:layout_marginTop="0dp"
 		android:layout_marginRight="0dp"
-		android:layout_marginTop="8dp"
-		android:background="@color/colorAccent"
-		app:layout_constraintBottom_toBottomOf="@+id/joystick"
-		app:layout_constraintLeft_toLeftOf="@+id/joystick"
-		app:layout_constraintRight_toRightOf="@+id/joystick"
-		app:layout_constraintTop_toTopOf="@+id/joystick"/>
+		app:layout_constraintRight_toRightOf="parent"
+		android:layout_marginLeft="0dp"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintBottom_toBottomOf="parent"
+		android:layout_marginBottom="0dp"
+		android:layout_marginStart="0dp"
+		android:layout_marginEnd="0dp"
+		app:primaryDimension="horizontal"/>
 
 </android.support.constraint.ConstraintLayout>

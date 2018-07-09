@@ -28,4 +28,10 @@
 		android:title="@string/joystick_demo_action"
 		app:showAsAction="never"/>
 
+	<item
+		android:id="@+id/action_open_info"
+		android:checkable="false"
+		android:title="@string/info_activity_title"
+		app:showAsAction="never"/>
+
 </menu>

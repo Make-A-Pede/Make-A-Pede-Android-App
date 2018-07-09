@@ -25,15 +25,42 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 
+	<com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
+		android:id="@+id/speedSliderLayout"
+		android:layout_width="wrap_content"
+		android:layout_height="0dp"
+		android:layout_marginLeft="8dp"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintTop_toTopOf="parent">
+		<com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
+			android:id="@+id/speedSlider"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:progressDrawable="@drawable/slider_background"
+			android:splitTrack="false"
+			android:thumb="@drawable/slider_thumb_rotated"
+			android:max="200"
+			android:progress="100"
+			app:seekBarRotation="CW270" />
+	</com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+
 	<SeekBar
-		android:id="@+id/seekBar"
+		android:id="@+id/turnSlider"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_marginBottom="8dp"
 		android:layout_marginLeft="8dp"
 		android:layout_marginRight="8dp"
+		android:layout_marginTop="8dp"
+		android:progressDrawable="@drawable/slider_background"
+		android:splitTrack="false"
+		android:thumb="@drawable/slider_thumb"
+		android:max="200"
+		android:progress="100"
 		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintLeft_toLeftOf="parent"
-		app:layout_constraintRight_toRightOf="parent"/>
+		app:layout_constraintLeft_toRightOf="@id/speedSliderLayout"
+		app:layout_constraintRight_toRightOf="parent"
+		app:layout_constraintTop_toTopOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

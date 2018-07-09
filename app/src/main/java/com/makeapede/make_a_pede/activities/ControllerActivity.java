@@ -21,10 +21,11 @@ package com.makeapede.make_a_pede.activities;
 
 import android.app.ProgressDialog;
 import android.arch.lifecycle.LifecycleRegistry;
-import android.arch.lifecycle.LifecycleRegistryOwner;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
@@ -39,25 +40,26 @@ import android.view.animation.LinearInterpolator;
 import com.crashlytics.android.Crashlytics;
 import com.makeapede.make_a_pede.R;
 import com.makeapede.make_a_pede.bluetooth.BluetoothActionConstants;
+import com.makeapede.make_a_pede.bluetooth.BluetoothClassicConnection;
 import com.makeapede.make_a_pede.bluetooth.BluetoothConnection;
 import com.makeapede.make_a_pede.bluetooth.BluetoothDemoConnection;
 import com.makeapede.make_a_pede.bluetooth.BluetoothLeConnection;
-import com.makeapede.make_a_pede.bluetooth.BluetoothClassicConnection;
 import com.makeapede.make_a_pede.fragments.ArrowKeyFragment;
 import com.makeapede.make_a_pede.fragments.ControllerFragment;
 import com.makeapede.make_a_pede.fragments.JoystickFragment;
+import com.makeapede.make_a_pede.fragments.SlidersFragment;
+import com.makeapede.make_a_pede.utils.MotorValues;
 
 import io.fabric.sdk.android.Fabric;
 
 public class ControllerActivity extends AppCompatActivity implements BluetoothConnection.BluetoothConnectionEventListener,
-																	 BluetoothActionConstants,
-																	 LifecycleRegistryOwner {
-	private static final String TAG = ControllerActivity.class.getSimpleName();
+																	 BluetoothActionConstants {
 
 	private static final String EXTRA_CURRENT_FRAGMENT = "current-fragment";
 
 	private static final int FRAGMENT_JOYSTICK = 0;
 	private static final int FRAGMENT_ARROWS = 1;
+	private static final int FRAGMENT_SLIDERS = 2;
 
 	private LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
 
@@ -70,6 +72,7 @@ public class ControllerActivity extends AppCompatActivity implements BluetoothCo
 	private FragmentManager fragmentManager;
 	private MenuItem joystickMenuItem;
 	private MenuItem arrowsMenuItem;
+	private MenuItem slidersMenuItem;
 
 	private View headingIndicator;
 
@@ -142,10 +145,16 @@ public class ControllerActivity extends AppCompatActivity implements BluetoothCo
 		if(savedInstanceState != null) {
 			if (savedInstanceState.getInt(EXTRA_CURRENT_FRAGMENT, FRAGMENT_JOYSTICK) == FRAGMENT_JOYSTICK) {
 				setCurrentFragment(FRAGMENT_JOYSTICK);
-			} else {
+			} else if (savedInstanceState.getInt(EXTRA_CURRENT_FRAGMENT, FRAGMENT_JOYSTICK) == FRAGMENT_ARROWS) {
 				setCurrentFragment(FRAGMENT_ARROWS);
+			} else {
+				setCurrentFragment(FRAGMENT_SLIDERS);
 			}
 		}
+	}
+
+	private void setDrive(MotorValues values) {
+		setDrive(values.left+255, values.right+255);
 	}
 
 	private void setDrive(int left, int right) {
@@ -170,6 +179,7 @@ public class ControllerActivity extends AppCompatActivity implements BluetoothCo
 
 		joystickMenuItem = menu.findItem(R.id.action_joystick);
 		arrowsMenuItem = menu.findItem(R.id.action_arrows);
+		slidersMenuItem = menu.findItem(R.id.action_sliders);
 
 		showMenuItems();
 
@@ -185,6 +195,10 @@ public class ControllerActivity extends AppCompatActivity implements BluetoothCo
 
 			case R.id.action_arrows:
 				setCurrentFragment(FRAGMENT_ARROWS);
+				break;
+
+			case R.id.action_sliders:
+				setCurrentFragment(FRAGMENT_SLIDERS);
 				break;
 
 			case android.R.id.home:
@@ -203,9 +217,15 @@ public class ControllerActivity extends AppCompatActivity implements BluetoothCo
 			if(currentFragment == FRAGMENT_JOYSTICK) {
 				joystickMenuItem.setVisible(false);
 				arrowsMenuItem.setVisible(true);
-			} else {
+				slidersMenuItem.setVisible(true);
+			} else if (currentFragment == FRAGMENT_ARROWS) {
 				joystickMenuItem.setVisible(true);
 				arrowsMenuItem.setVisible(false);
+				slidersMenuItem.setVisible(true);
+			} else {
+				joystickMenuItem.setVisible(true);
+				arrowsMenuItem.setVisible(true);
+				slidersMenuItem.setVisible(false);
 			}
 
 			invalidateOptionsMenu();
@@ -227,8 +247,13 @@ public class ControllerActivity extends AppCompatActivity implements BluetoothCo
 
 		if(currentFragment == FRAGMENT_JOYSTICK) {
 			controllerFragment = new JoystickFragment();
-		} else {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		} else if (currentFragment == FRAGMENT_ARROWS) {
 			controllerFragment = new ArrowKeyFragment();
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		} else {
+			controllerFragment = new SlidersFragment();
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		}
 
 		controllerFragment.setMessageListener(this::setDrive);
@@ -269,6 +294,7 @@ public class ControllerActivity extends AppCompatActivity implements BluetoothCo
 		}
 	}
 
+	@NonNull
 	@Override
 	public LifecycleRegistry getLifecycle() {
 		return lifecycleRegistry;

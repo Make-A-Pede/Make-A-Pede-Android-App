@@ -34,4 +34,10 @@
 		android:icon="@drawable/ic_action_arrows"
 		app:showAsAction="ifRoom"/>
 
+	<item
+		android:id="@+id/action_sliders"
+		android:title="@string/action_sliders"
+		android:icon="@drawable/ic_action_arrows"
+		app:showAsAction="ifRoom"/>
+
 </menu>
