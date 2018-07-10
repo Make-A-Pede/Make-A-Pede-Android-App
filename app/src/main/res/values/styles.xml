@@ -38,6 +38,7 @@
 	<style name="AppTheme.TransparentActionBar" parent="AppTheme">
 		<item name="android:actionBarStyle">@style/ThemeTransparentActionBar</item>
 		<item name="android:windowActionBarOverlay">true</item>
+		<item name="actionBarTheme">@style/ThemeDarkActionBar</item>
 		<item name="actionBarStyle">@style/ThemeTransparentActionBar</item>
 		<item name="windowActionBarOverlay">true</item>
 	</style>
@@ -45,10 +46,19 @@
 	<style name="ThemeTransparentActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid">
 		<item name="android:background">@null</item>
 		<item name="background">@null</item>
+
+	</style>
+
+	<style name="ThemeDarkActionBar" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+		<item name="actionOverflowButtonStyle">@style/ActionOverflowButtonStyle</item>
 	</style>
 
 	<style name="MenuItemTextAppearance">
 		<item name="android:textColor">@color/white</item>
+	</style>
+
+	<style name="ActionOverflowButtonStyle" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+		<item name="android:tint">@color/colorPrimary</item>
 	</style>
 
 </resources>

@@ -25,19 +25,19 @@
 	<item
 		android:id="@+id/action_joystick"
 		android:title="@string/action_joystick"
-		android:icon="@drawable/ic_action_joystick"
+		android:icon="@drawable/joystick"
 		app:showAsAction="ifRoom"/>
 
 	<item
 		android:id="@+id/action_arrows"
 		android:title="@string/action_arrows"
-		android:icon="@drawable/ic_action_arrows"
+		android:icon="@drawable/arrows"
 		app:showAsAction="ifRoom"/>
 
 	<item
 		android:id="@+id/action_sliders"
 		android:title="@string/action_sliders"
-		android:icon="@drawable/ic_action_arrows"
+		android:icon="@drawable/remote"
 		app:showAsAction="ifRoom"/>
 
 </menu>

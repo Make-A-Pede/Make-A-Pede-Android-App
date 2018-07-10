@@ -24,31 +24,18 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.customtabs.CustomTabsIntent;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.crashlytics.android.Crashlytics;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.makeapede.make_a_pede.R;
-import com.makeapede.make_a_pede.firebase.FbLinkAction;
-
-import java.util.Random;
 
 import io.fabric.sdk.android.Fabric;
 
 public class HomeActivity extends AppCompatActivity {
 	public static final String EXTRA_DEMO = "demo";
-
-	private String fbLinkText;
-	private String fbLinkUrl;
-	private String fbLinkActionText;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,36 +44,6 @@ public class HomeActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_home);
 
 		setTitle("");
-
-		FirebaseDatabase database = FirebaseDatabase.getInstance();
-		DatabaseReference buttonsRef = database.getReference("/buttons");
-
-		buttonsRef.addValueEventListener(new ValueEventListener() {
-			@Override
-			public void onDataChange(DataSnapshot dataSnapshot) {
-				int childrenCount = (int) dataSnapshot.getChildrenCount();
-
-				Random random = new Random(System.currentTimeMillis());
-				int index = random.nextInt(childrenCount);
-
-				FbLinkAction action = dataSnapshot.child(String.valueOf(index)).getValue(FbLinkAction.class);
-				fbLinkText = action.text;
-				fbLinkUrl = action.link;
-				fbLinkActionText = action.action;
-
-				Snackbar snackbar = Snackbar.make(
-						findViewById(R.id.coordinator_layout),
-						fbLinkText,
-						Snackbar.LENGTH_INDEFINITE);
-
-				snackbar.setAction(fbLinkActionText, HomeActivity.this::onFbLinkActionClicked);
-
-				snackbar.show();
-			}
-
-			@Override
-			public void onCancelled(DatabaseError databaseError) {}
-		});
 	}
 
 	/**
@@ -114,17 +71,6 @@ public class HomeActivity extends AppCompatActivity {
 			builder.setToolbarColor(0x91cf34);
 		}
 		customTabsIntent.launchUrl(this, Uri.parse(url));
-	}
-
-	public void onFbLinkActionClicked(View view) {
-		CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-		CustomTabsIntent customTabsIntent = builder.build();
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			builder.setToolbarColor(getColor(R.color.colorPrimary));
-		} else {
-			builder.setToolbarColor(0x91cf34);
-		}
-		customTabsIntent.launchUrl(this, Uri.parse(fbLinkUrl));
 	}
 
 	@Override
