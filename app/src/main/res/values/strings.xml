@@ -22,6 +22,7 @@
 	<string name="device_list">Device List</string>
 	<string name="ble_not_supported">BLE is not supported</string>
 	<string name="error_bluetooth_not_supported">Bluetooth not supported</string>
+	<string name="error_bluetooth_not_enabled">Bluetooth is not enabled</string>
 	<string name="unknown_device">Unknown device</string>
 	<string name="menu_scan">Scan</string>
 	<string name="menu_stop">Stop</string>

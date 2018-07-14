@@ -52,7 +52,7 @@ public class BluetoothScanner extends ScanCallback {
 	protected BluetoothAdapter btAdapter;
 	private BluetoothLeScanner leScanner;
 
-	public BluetoothScanner(Context context) throws BluetoothNotSupportedException {
+	public BluetoothScanner(Context context) throws BluetoothNotSupportedException, BluetoothNotEnabledException {
 		this.context = context;
 
 		final BluetoothManager bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
@@ -63,8 +63,10 @@ public class BluetoothScanner extends ScanCallback {
 			Toast.makeText(context, context.getText(R.string.ble_not_supported), Toast.LENGTH_SHORT).show();
 		}
 
-		if (btAdapter == null || leScanner == null) {
+		if (btAdapter == null) {
 			throw new BluetoothNotSupportedException();
+		} else if (leScanner == null) {
+			throw new BluetoothNotEnabledException();
 		}
 	}
 

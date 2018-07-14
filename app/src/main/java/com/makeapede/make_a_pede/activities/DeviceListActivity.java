@@ -48,6 +48,7 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.makeapede.make_a_pede.R;
+import com.makeapede.make_a_pede.bluetooth.BluetoothNotEnabledException;
 import com.makeapede.make_a_pede.bluetooth.BluetoothNotSupportedException;
 import com.makeapede.make_a_pede.bluetooth.BluetoothScanner;
 
@@ -75,6 +76,8 @@ public class DeviceListActivity extends AppCompatActivity implements BluetoothSc
 
 	private ListView deviceList;
 
+	private boolean hasRequestedBluetoothEnable = false;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -88,33 +91,33 @@ public class DeviceListActivity extends AppCompatActivity implements BluetoothSc
 
 		this.deviceList = findViewById(R.id.listView);
 
-		try {
-			btScanner = new BluetoothScanner(this);
-		} catch (BluetoothNotSupportedException e) {
-			Toast.makeText(this, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
-			finish();
-		}
+		initBluetooth();
 	}
+
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.device_list_activity_menu, menu);
-		if (!btScanner.isScanning()) {
-			menu.findItem(R.id.menu_stop).setVisible(false);
-			menu.findItem(R.id.menu_scan).setVisible(true);
-			menu.findItem(R.id.menu_refresh).setActionView(null);
-		} else {
-			menu.findItem(R.id.menu_stop).setVisible(true);
-			menu.findItem(R.id.menu_scan).setVisible(false);
 
-			View indicatorLayout = getLayoutInflater().inflate(R.layout.actionbar_indeterminate_progress, null);
-			ProgressBar indicator = indicatorLayout.findViewById(R.id.loading_indicator);
+		if (checkBluetoothStatus()) {
+			if (!btScanner.isScanning()) {
+				menu.findItem(R.id.menu_stop).setVisible(false);
+				menu.findItem(R.id.menu_scan).setVisible(true);
+				menu.findItem(R.id.menu_refresh).setActionView(null);
+			} else {
+				menu.findItem(R.id.menu_stop).setVisible(true);
+				menu.findItem(R.id.menu_scan).setVisible(false);
 
-			indicator.setVisibility(View.VISIBLE);
-			indicator.setIndeterminate(true);
-			indicator.getIndeterminateDrawable().setColorFilter(0xFF323232, PorterDuff.Mode.MULTIPLY);
+				View indicatorLayout = getLayoutInflater().inflate(R.layout.actionbar_indeterminate_progress, null);
+				ProgressBar indicator = indicatorLayout.findViewById(R.id.loading_indicator);
 
-			menu.findItem(R.id.menu_refresh).setActionView(indicatorLayout);
+				indicator.setVisibility(View.VISIBLE);
+				indicator.setIndeterminate(true);
+				indicator.getIndeterminateDrawable().setColorFilter(0xFF323232, PorterDuff.Mode.MULTIPLY);
+
+				menu.findItem(R.id.menu_refresh).setActionView(indicatorLayout);
+			}
 		}
 
 		return true;
@@ -166,15 +169,20 @@ public class DeviceListActivity extends AppCompatActivity implements BluetoothSc
 						PERMISSION_REQUEST_LOCATION);
 			}
 		} else {
-			connect();
+			scanLeDevice(true);
 		}
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_CANCELED) {
+			hasRequestedBluetoothEnable = false;
 			finish();
 			return;
+		} else if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_OK) {
+			hasRequestedBluetoothEnable = false;
+			initBluetooth();
+			scanLeDevice(true);
 		}
 
 		super.onActivityResult(requestCode, resultCode, data);
@@ -195,22 +203,13 @@ public class DeviceListActivity extends AppCompatActivity implements BluetoothSc
 				if (grantResults.length > 0
 						&& grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-					connect();
+					scanLeDevice(true);
 
 				} else {
 					finish();
 				}
 			}
 		}
-	}
-
-	private void connect() {
-		if (!btScanner.getBtAdapter().isEnabled()) {
-			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-		}
-
-		scanLeDevice(true);
 	}
 
 	protected void onListItemClick(AdapterView l, View v, int position, long id) {
@@ -229,13 +228,41 @@ public class DeviceListActivity extends AppCompatActivity implements BluetoothSc
 	}
 
 	private void scanLeDevice(final boolean enable) {
-		if (enable) {
-			btScanner.startScan(this, SCAN_PERIOD);
-		} else {
-			btScanner.stopScan();
-		}
+		if (checkBluetoothStatus()) {
+			if (enable) {
+				btScanner.startScan(this, SCAN_PERIOD);
+			} else {
+				btScanner.stopScan();
+			}
 
-		invalidateOptionsMenu();
+			invalidateOptionsMenu();
+		} else {
+			requestBluetoothEnable();
+		}
+	}
+
+	private boolean checkBluetoothStatus() {
+		return btScanner != null && btScanner.getBtAdapter().isEnabled();
+	}
+
+	private void requestBluetoothEnable() {
+		if (!hasRequestedBluetoothEnable) {
+			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+
+			hasRequestedBluetoothEnable = true;
+		}
+	}
+
+	private void initBluetooth() {
+		try {
+			btScanner = new BluetoothScanner(this);
+		} catch (BluetoothNotSupportedException e) {
+			Toast.makeText(this, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
+			finish();
+		} catch (BluetoothNotEnabledException e) {
+			Toast.makeText(this, R.string.error_bluetooth_not_enabled, Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	@Override
