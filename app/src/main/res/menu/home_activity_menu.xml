@@ -34,4 +34,10 @@
 		android:title="@string/info_activity_title"
 		app:showAsAction="never"/>
 
+	<item
+		android:id="@+id/action_open_privacy_policy"
+		android:checkable="false"
+		android:title="@string/action_open_privacy_policy"
+		app:showAsAction="never"/>
+
 </menu>

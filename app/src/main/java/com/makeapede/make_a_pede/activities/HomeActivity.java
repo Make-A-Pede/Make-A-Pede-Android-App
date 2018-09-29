@@ -73,6 +73,18 @@ public class HomeActivity extends AppCompatActivity {
 		customTabsIntent.launchUrl(this, Uri.parse(url));
 	}
 
+	public void openPrivacyPolicy() {
+		String url = "http://makeapede.com/android/privacy";
+		CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+		CustomTabsIntent customTabsIntent = builder.build();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			builder.setToolbarColor(getColor(R.color.colorPrimary));
+		} else {
+			builder.setToolbarColor(0x91cf34);
+		}
+		customTabsIntent.launchUrl(this, Uri.parse(url));
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.home_activity_menu, menu);
@@ -91,6 +103,9 @@ public class HomeActivity extends AppCompatActivity {
 				break;
 			case R.id.action_open_info:
 				startActivity(new Intent(this, InfoActivity.class));
+				break;
+			case R.id.action_open_privacy_policy:
+				openPrivacyPolicy();
 				break;
 		}
 

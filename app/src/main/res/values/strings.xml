@@ -37,6 +37,7 @@
 	<string name="protocol_ble">BLE</string>
 	<string name="protocol_spp">SPP</string>
 	<string name="info_activity_title">Info</string>
+	<string name="action_open_privacy_policy">Privacy Policy</string>
 	<string name="app_title_info_page">Official Make-A-Pede Controller App</string>
 	<string name="app_version_text">Version: 2.0</string>
 	<string name="arduino_library_version_text">Arduino Library Version: 1.1.0</string>
