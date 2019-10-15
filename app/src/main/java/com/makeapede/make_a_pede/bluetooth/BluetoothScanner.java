@@ -55,17 +55,25 @@ public class BluetoothScanner extends ScanCallback {
 	public BluetoothScanner(Context context) throws BluetoothNotSupportedException, BluetoothNotEnabledException {
 		this.context = context;
 
-		final BluetoothManager bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
-		btAdapter = bluetoothManager.getAdapter();
-		leScanner = btAdapter.getBluetoothLeScanner();
-
 		if (!context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
 			Toast.makeText(context, context.getText(R.string.ble_not_supported), Toast.LENGTH_SHORT).show();
 		}
 
+		final BluetoothManager bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
+
+		if (bluetoothManager == null) {
+			throw new BluetoothNotSupportedException();
+		}
+
+		btAdapter = bluetoothManager.getAdapter();
+
 		if (btAdapter == null) {
 			throw new BluetoothNotSupportedException();
-		} else if (leScanner == null) {
+		}
+
+		leScanner = btAdapter.getBluetoothLeScanner();
+
+		if (leScanner == null) {
 			throw new BluetoothNotEnabledException();
 		}
 	}

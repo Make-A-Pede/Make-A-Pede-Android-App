@@ -22,8 +22,8 @@ package com.makeapede.make_a_pede.activities;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.customtabs.CustomTabsIntent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Button;
 
 import com.makeapede.make_a_pede.R;

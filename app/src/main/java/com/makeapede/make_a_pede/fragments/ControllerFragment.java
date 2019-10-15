@@ -19,10 +19,9 @@
 
 package com.makeapede.make_a_pede.fragments;
 
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import com.makeapede.make_a_pede.utils.MotorValues;
-import com.makeapede.make_a_pede.utils.Timer;
 
 /**
  * A fragment that provides a UI that can be used to control the Make-A-Pede.
