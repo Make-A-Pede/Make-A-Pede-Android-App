@@ -61,8 +61,6 @@ public class ControllerActivity extends AppCompatActivity implements BluetoothCo
 	private static final int FRAGMENT_ARROWS = 1;
 	private static final int FRAGMENT_SLIDERS = 2;
 
-	private LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
-
 	private int currentFragment = FRAGMENT_JOYSTICK;
 
 	private ProgressDialog progress;
@@ -292,11 +290,5 @@ public class ControllerActivity extends AppCompatActivity implements BluetoothCo
 				finish();
 				break;
 		}
-	}
-
-	@NonNull
-	@Override
-	public LifecycleRegistry getLifecycle() {
-		return lifecycleRegistry;
 	}
 }
